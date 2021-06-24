@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '/providers/userProvider.dart';
+import '/providers/listProvider.dart';
 import 'package:provider/provider.dart';
 
 class CustomDialog extends StatefulWidget {
@@ -11,10 +11,11 @@ class CustomDialog extends StatefulWidget {
 }
 
 class _CustomDialogState extends State<CustomDialog> {
+  bool save = false;
+
   @override
   void initState() {
     super.initState();
-    Provider.of<UsersProvider>(context, listen: false).fetchData();
   }
 
   @override
@@ -24,11 +25,10 @@ class _CustomDialogState extends State<CustomDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final selectionList = context
-        .watch<UsersProvider>()
-        .getData()
-        .data!
-        .where((element) => !element.selection!)
+    var selectionList = context
+        .watch<ListProvider>()
+        .listData
+        .where((element) => !element.selection)
         .toList();
     return Dialog(
       shape: RoundedRectangleBorder(
@@ -38,11 +38,7 @@ class _CustomDialogState extends State<CustomDialog> {
       ),
       elevation: 0.0,
       backgroundColor: Colors.transparent,
-      child: contentBox(context, selectionList),
-    );
-  }
-
-  contentBox(context, selectionList) => Container(
+      child: Container(
         height: MediaQuery.of(context).size.height * .7,
         color: Colors.white,
         child: SingleChildScrollView(
@@ -59,9 +55,13 @@ class _CustomDialogState extends State<CustomDialog> {
                     style: TextStyle(color: Colors.black),
                   ),
                   trailing: Checkbox(
-                    value: false,
+                    value: selectionList[index].selectionTemp,
                     activeColor: Colors.pink,
-                    onChanged: (bool? value) {},
+                    onChanged: (bool? value) {
+                      context
+                          .read<ListProvider>()
+                          .updateTempSelection(selectionList[index]);
+                    },
                   ),
                 ),
               ),
@@ -71,14 +71,22 @@ class _CustomDialogState extends State<CustomDialog> {
                   style: TextStyle(color: Colors.black),
                 ),
                 trailing: CupertinoSwitch(
-                  value: false,
+                  value: save,
                   activeColor: Colors.pink,
-                  onChanged: (value) {},
+                  onChanged: (value) {
+                    setState(() {
+                      save = !save;
+                    });
+                  },
                 ),
               ),
               MaterialButton(
-                onPressed: () =>
-                    context.read<UsersProvider>().updateSelection(),
+                onPressed: () {
+                  if (save) {
+                    context.read<ListProvider>().confirm();
+                  }
+                  Navigator.pop(context);
+                },
                 child: Text('Submit'),
                 color: Colors.pink,
                 textColor: Colors.white,
@@ -86,5 +94,7 @@ class _CustomDialogState extends State<CustomDialog> {
             ],
           ),
         ),
-      );
+      ),
+    );
+  }
 }
