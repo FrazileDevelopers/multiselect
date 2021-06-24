@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:multiselect/constants/constants.dart';
-import 'package:multiselect/routes/router.dart';
+import 'package:multiselect/themes/styles.dart';
+import '/constants/constants.dart';
+import '/providers/providers.dart';
+import '/routes/router.dart';
+import 'package:provider/provider.dart';
 
 class ConfigApp extends StatefulWidget {
   const ConfigApp({Key? key}) : super(key: key);
@@ -12,12 +15,15 @@ class ConfigApp extends StatefulWidget {
 class _ConfigAppState extends State<ConfigApp> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'MultiSelect',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData.dark(),
-      onGenerateRoute: Routers.generateRoute,
-      initialRoute: Constants.initial,
+    return MultiProvider(
+      providers: Providers.providers(),
+      child: MaterialApp(
+        title: 'MultiSelect',
+        debugShowCheckedModeBanner: false,
+        theme: Styles.themeData(false, context),
+        onGenerateRoute: Routers.generateRoute,
+        initialRoute: Constants.initial,
+      ),
     );
   }
 }
