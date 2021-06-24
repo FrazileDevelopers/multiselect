@@ -25,27 +25,41 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final users = Provider.of<UsersProvider>(context);
+    // final users = Provider.of<UsersProvider>(context);
+    final selectionList = context
+        .watch<UsersProvider>()
+        .getData()
+        .data!
+        .where((element) => element.selection!)
+        .toList();
     return Scaffold(
       appBar: AppBar(
         title: Text('Users'),
       ),
-      body: users.isFetching
-          ? Center(
-              child: SpinKitChasingDots(
-                color: Colors.pink,
-              ),
-            )
-          : ListView.separated(
-              itemBuilder: (c, i) => Dismissible(
-                key: Key(users.getData().data![i].firstName.toString()),
-                child: ListTile(
-                  title: Text(users.getData().data![i].firstName.toString()),
+      body: ListView.separated(
+        itemBuilder: (c, i) => Dismissible(
+          key: Key(selectionList[i].firstName.toString()),
+          background: Padding(
+            padding: const EdgeInsets.only(right: 10.0),
+            child: Container(
+              color: Colors.red,
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: Text(
+                  'Delete',
                 ),
               ),
-              separatorBuilder: (c, i) => Divider(),
-              itemCount: users.getData().data!.length,
             ),
+          ),
+          direction: DismissDirection.endToStart,
+          onDismissed: (direction) {},
+          child: ListTile(
+            title: Text(selectionList[i].firstName.toString()),
+          ),
+        ),
+        separatorBuilder: (c, i) => Divider(),
+        itemCount: selectionList.length,
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => showDialog(
           context: context,

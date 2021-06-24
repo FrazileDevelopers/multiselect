@@ -46,6 +46,7 @@ class Datum {
     this.firstName,
     this.lastName,
     this.avatar,
+    this.selection,
   });
 
   final int? id;
@@ -53,6 +54,7 @@ class Datum {
   final String? firstName;
   final String? lastName;
   final String? avatar;
+  final bool? selection;
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
         id: json["id"] == null ? null : json["id"],
@@ -60,6 +62,7 @@ class Datum {
         firstName: json["first_name"] == null ? null : json["first_name"],
         lastName: json["last_name"] == null ? null : json["last_name"],
         avatar: json["avatar"] == null ? null : json["avatar"],
+        selection: false,
       );
 
   Map<String, dynamic> toJson() => {
@@ -68,6 +71,7 @@ class Datum {
         "first_name": firstName == null ? null : firstName,
         "last_name": lastName == null ? null : lastName,
         "avatar": avatar == null ? null : avatar,
+        "selection": selection,
       };
 }
 
