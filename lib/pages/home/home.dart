@@ -36,30 +36,45 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text('Users'),
       ),
-      body: ListView.separated(
-        itemBuilder: (c, i) => Dismissible(
-          key: Key(selectionList[i].firstName.toString()),
-          background: Padding(
-            padding: const EdgeInsets.only(right: 10.0),
-            child: Container(
-              color: Colors.red,
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: Text(
-                  'Delete',
-                ),
+      body: context.watch<UsersProvider>().isFetching
+          ? Center(
+              child: SpinKitCircle(
+                color: Colors.pink,
               ),
-            ),
-          ),
-          direction: DismissDirection.endToStart,
-          onDismissed: (direction) {},
-          child: ListTile(
-            title: Text(selectionList[i].firstName.toString()),
-          ),
-        ),
-        separatorBuilder: (c, i) => Divider(),
-        itemCount: selectionList.length,
-      ),
+            )
+          : selectionList.length <= 0
+              ? Center(
+                  child: Text(
+                    'No Users Selected!',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                )
+              : ListView.separated(
+                  itemBuilder: (c, i) => Dismissible(
+                    key: Key(selectionList[i].firstName.toString()),
+                    background: Padding(
+                      padding: const EdgeInsets.only(right: 10.0),
+                      child: Container(
+                        color: Colors.red,
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: Text(
+                            'Delete',
+                          ),
+                        ),
+                      ),
+                    ),
+                    direction: DismissDirection.endToStart,
+                    onDismissed: (direction) {},
+                    child: ListTile(
+                      title: Text(selectionList[i].firstName.toString()),
+                    ),
+                  ),
+                  separatorBuilder: (c, i) => Divider(),
+                  itemCount: selectionList.length,
+                ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => showDialog(
           context: context,
