@@ -25,6 +25,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final users = Provider.of<ListProvider>(context);
     final selectionList = context
         .watch<ListProvider>()
         .listData
@@ -34,35 +35,50 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text('Home'),
       ),
-      body: ListView.builder(
-        itemCount: selectionList.length,
-        itemBuilder: (context, index) {
-          final item = selectionList[index];
-          return Dismissible(
-            key: Key(item.firstName!),
-            background: Padding(
-              padding: const EdgeInsets.only(right: 10.0),
-              child: Container(
-                color: Colors.red,
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: Text(
-                    'Delete',
-                  ),
-                ),
+      body: users.isFetching
+          ? Center(
+              child: SpinKitChasingDots(
+                color: Colors.pink,
               ),
-            ),
-            direction: DismissDirection.endToStart,
-            onDismissed: (direction) {
-              context.read<ListProvider>().updateSelection(item);
-            },
-            child: ListTile(
-              title: Text(item.firstName!),
-              subtitle: Text(item.email!),
-            ),
-          );
-        },
-      ),
+            )
+          : selectionList.length <= 0
+              ? Center(
+                  child: Text(
+                    'No Users Selected',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                )
+              : ListView.builder(
+                  itemCount: selectionList.length,
+                  itemBuilder: (context, index) {
+                    final item = selectionList[index];
+                    return Dismissible(
+                      key: Key(item.firstName!),
+                      background: Padding(
+                        padding: const EdgeInsets.only(right: 10.0),
+                        child: Container(
+                          color: Colors.red,
+                          child: Align(
+                            alignment: Alignment.centerRight,
+                            child: Text(
+                              'Delete',
+                            ),
+                          ),
+                        ),
+                      ),
+                      direction: DismissDirection.endToStart,
+                      onDismissed: (direction) {
+                        context.read<ListProvider>().updateSelection(item);
+                      },
+                      child: ListTile(
+                        title: Text(item.firstName!),
+                        subtitle: Text(item.email!),
+                      ),
+                    );
+                  },
+                ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => showDialog(
           context: context,

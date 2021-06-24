@@ -3,13 +3,20 @@ import 'model/userList.dart';
 import 'users.dart';
 
 class ListProvider with ChangeNotifier {
+  bool _isFetching = false;
+
+  bool get isFetching => _isFetching;
+
   List<UserListData> _listData = [];
 
   List<UserListData> get listData => _listData;
 
   ListProvider() {
+    _isFetching = true;
+    notifyListeners();
     UsersServices().fetchData(1).then((value) {
       _listData = value.data!;
+      _isFetching = false;
       notifyListeners();
     });
   }
