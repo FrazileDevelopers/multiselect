@@ -51,7 +51,13 @@ class _CustomDialogState extends State<CustomDialog> {
                 activeColor: Colors.pink,
                 onChanged: (value) {},
               ),
-            )
+            ),
+            MaterialButton(
+              onPressed: () {},
+              child: Text('Submit'),
+              color: Colors.pink,
+              textColor: Colors.white,
+            ),
           ],
         ),
       );

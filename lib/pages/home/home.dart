@@ -37,8 +37,11 @@ class _HomePageState extends State<HomePage> {
               ),
             )
           : ListView.separated(
-              itemBuilder: (c, i) => ListTile(
-                title: Text(users.getData().data![i].firstName.toString()),
+              itemBuilder: (c, i) => Dismissible(
+                key: Key(users.getData().data![i].firstName.toString()),
+                child: ListTile(
+                  title: Text(users.getData().data![i].firstName.toString()),
+                ),
               ),
               separatorBuilder: (c, i) => Divider(),
               itemCount: users.getData().data!.length,
