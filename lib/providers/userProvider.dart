@@ -37,4 +37,10 @@ class UsersProvider with ChangeNotifier {
   }
 
   UsersApi getData() => api;
+
+  void updateSelection(Datum item) {
+    var index = getData().data!.indexOf(item);
+    getData().data![index].selection = !getData().data![index].selection!;
+    notifyListeners();
+  }
 }

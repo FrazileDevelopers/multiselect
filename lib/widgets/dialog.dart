@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:multiselect/providers/userProvider.dart';
+import '/providers/userProvider.dart';
 import 'package:provider/provider.dart';
 
 class CustomDialog extends StatefulWidget {
@@ -19,7 +19,6 @@ class _CustomDialogState extends State<CustomDialog> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
   }
 
@@ -78,7 +77,8 @@ class _CustomDialogState extends State<CustomDialog> {
                 ),
               ),
               MaterialButton(
-                onPressed: () {},
+                onPressed: () =>
+                    context.read<UsersProvider>().updateSelection(),
                 child: Text('Submit'),
                 color: Colors.pink,
                 textColor: Colors.white,

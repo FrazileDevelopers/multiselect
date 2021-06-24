@@ -54,7 +54,7 @@ class Datum {
   final String? firstName;
   final String? lastName;
   final String? avatar;
-  final bool? selection;
+  bool? selection;
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
         id: json["id"] == null ? null : json["id"],

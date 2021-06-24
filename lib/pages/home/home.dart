@@ -53,7 +53,7 @@ class _HomePageState extends State<HomePage> {
                 )
               : ListView.separated(
                   itemBuilder: (c, i) => Dismissible(
-                    key: Key(selectionList[i].firstName.toString()),
+                    key: Key(selectionList[i].firstName!),
                     background: Padding(
                       padding: const EdgeInsets.only(right: 10.0),
                       child: Container(
@@ -69,7 +69,7 @@ class _HomePageState extends State<HomePage> {
                     direction: DismissDirection.endToStart,
                     onDismissed: (direction) {},
                     child: ListTile(
-                      title: Text(selectionList[i].firstName.toString()),
+                      title: Text(selectionList[i].firstName!),
                     ),
                   ),
                   separatorBuilder: (c, i) => Divider(),
